@@ -1,16 +1,16 @@
-import { Argv } from 'yargs'
-import { logger } from '../logger'
-import { bold, green } from 'picocolors'
-import prompts from 'prompts'
+import { Argv } from 'yargs';
+import { logger } from '../logger';
+import { bold, green } from 'picocolors';
+import prompts from 'prompts';
 
 interface GreetingArgv {}
 
-export const command = 'greeting'
-export const describe = 'Displays interactive prompts to demonstrate user input handling.'
-export const aliases = ['g']
+export const command = 'greeting';
+export const describe = 'Displays interactive prompts to demonstrate user input handling.';
+export const aliases = ['g'];
 
 export function builder(yargs: Argv<GreetingArgv>): Argv {
-  return yargs
+  return yargs;
 }
 
 export async function handler() {
@@ -18,8 +18,8 @@ export async function handler() {
     type: 'text',
     name: 'username',
     message: 'What is your name?',
-  })
-  logger.log(`Hello, ${green(bold(username))}!`)
+  });
+  logger.log(`Hello, ${green(bold(username))}!`);
 
   const { mood } = await prompts({
     type: 'select',
@@ -34,6 +34,6 @@ export async function handler() {
         value: '🤬',
       },
     ],
-  })
-  logger.log(`${green(bold(username))} ${mood}, Ciao!`)
+  });
+  logger.log(`${green(bold(username))} ${mood}, Ciao!`);
 }
