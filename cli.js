@@ -2,7 +2,8 @@
 import meow from 'meow';
 import moduleName from './src/index.js';
 
-const cli = meow(`
+const cli = meow(
+  `
 	Usage
 	  $ unicorn-fun [input]
 
@@ -14,13 +15,15 @@ const cli = meow(`
 	  unicorns & rainbows
 	  $ cli-name ponies
 	  ponies & rainbows
-`, {
-  flags: {
-    postfix: {
-      type: 'string',
-      default: 'rainbows'
+`,
+  {
+    flags: {
+      postfix: {
+        type: 'string',
+        default: 'rainbows'
+      }
     }
   }
-});
+);
 
 console.log(moduleName(cli.input[0] || 'unicorns', cli.flags));

@@ -17,7 +17,8 @@
     "node": ">=12"
   },
   "scripts": {
-    "test": "xo && ava"
+    "test": "xo && ava",
+    "fix": "xo --fix"
   },
   "files": [
     "cli.js"
