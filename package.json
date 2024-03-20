@@ -1,0 +1,41 @@
+{
+  "name": "ruley-tracks",
+  "version": "0.0.1",
+  "description": "My awesome command-line tool",
+  "license": "MIT",
+  "repository": "rylnd/ruley-tracks",
+  "author": {
+    "name": "Ryland Herrick",
+    "email": "ryalnd@gmail.com",
+    "url": "http://rylnd.com"
+  },
+  "type": "module",
+  "bin": {
+    "ruley-tracks": "cli.js"
+  },
+  "engines": {
+    "node": ">=12"
+  },
+  "scripts": {
+    "test": "xo && ava"
+  },
+  "files": [
+    "cli.js"
+  ],
+  "keywords": [
+    "cli",
+    "cli-app",
+    "rally",
+    "elasticsearch",
+    "kibana",
+    "rules"
+  ],
+  "dependencies": {
+    "meow": "^9.0.0"
+  },
+  "devDependencies": {
+    "ava": "^3.15.0",
+    "execa": "^5.0.0",
+    "xo": "^0.37.0"
+  }
+}
