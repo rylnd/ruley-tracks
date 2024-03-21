@@ -1,8 +1,7 @@
 import { ArgumentsCamelCase, Argv } from 'yargs';
 import { logger } from '../logger';
-// import * as process from 'node:process';
 import { bold, blue, green } from 'picocolors';
-import { EPR_SEARCH_URL } from '../constants';
+import { EPR_RULE_URL } from '../constants';
 import { ruleFetcherFactory } from '../rule-fetcher-factory';
 
 interface FetchRulesArgv {
@@ -17,7 +16,7 @@ export function builder(yargs: Argv): Argv<FetchRulesArgv> {
   return yargs.option('url', {
     type: 'string',
     alias: 'f',
-    default: EPR_SEARCH_URL,
+    default: EPR_RULE_URL,
   });
 }
 

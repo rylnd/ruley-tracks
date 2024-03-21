@@ -10,7 +10,7 @@ import { PackageResponse, IRuleFetcher } from './types';
 import { FileManager } from './file-manager';
 import { readRules } from './rule-reader';
 
-const getEprRulesPath = (eprPackagePath: string): string => join(eprPackagePath, 'kibana', 'security_rules');
+const getEprRulesPath = (eprPackagePath: string): string => join(eprPackagePath, 'kibana', 'security_rule');
 
 const getEprPackageFolderName = (downloadPath: string): string => basename(downloadPath, extname(downloadPath));
 
