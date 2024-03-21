@@ -1,13 +1,13 @@
-import { EpmRuleFetcher } from './epm-rule-fetcher';
+import { EprRuleFetcher } from './epr-rule-fetcher';
 import httpClientMock from './http-client.mock';
 import { buildPackageSearchResponseMock } from './mocks/package-search-response';
 
-describe('EpmRuleFetcher', () => {
+describe('EprRuleFetcher', () => {
   it.skip('retrieves the download link from the package response', async () => {
     const mockClient = httpClientMock.create();
     mockClient.getJSON.mockResolvedValueOnce(buildPackageSearchResponseMock());
 
-    const subject = new EpmRuleFetcher({ client: mockClient });
+    const subject = new EprRuleFetcher({ client: mockClient });
 
     await subject.fetch();
 

@@ -4,24 +4,24 @@ import { Readable } from 'stream';
 import { finished } from 'stream/promises';
 import { basename, extname, join } from 'path';
 
-import { EPM_RULE_URL } from './constants';
+import { EPR_RULE_URL } from './constants';
 import type { HttpClient } from './http-client';
 import { PackageResponse, IRuleFetcher } from './types';
 import { FileManager } from './file-manager';
 import { readRules } from './rule-reader';
 
-const getEpmRulesPath = (epmPackagePath: string): string => join(epmPackagePath, 'kibana', 'security_rules');
+const getEprRulesPath = (eprPackagePath: string): string => join(eprPackagePath, 'kibana', 'security_rules');
 
-const getEpmPackageFolderName = (downloadPath: string): string => basename(downloadPath, extname(downloadPath));
+const getEprPackageFolderName = (downloadPath: string): string => basename(downloadPath, extname(downloadPath));
 
-export class EpmRuleFetcher implements IRuleFetcher {
+export class EprRuleFetcher implements IRuleFetcher {
   private url: string;
   private client: HttpClient;
   private fileManager: FileManager;
 
   constructor({ url, client }: { url?: string; client: HttpClient }) {
     this.client = client;
-    this.url = url || EPM_RULE_URL;
+    this.url = url || EPR_RULE_URL;
     this.fileManager = new FileManager();
   }
 
@@ -50,9 +50,9 @@ export class EpmRuleFetcher implements IRuleFetcher {
     new AdmZip(zipPath).extractAllTo(unzipPath, true);
 
     // read rules
-    const packageFolderName = getEpmPackageFolderName(downloadPath);
+    const packageFolderName = getEprPackageFolderName(downloadPath);
     const packagePath = join(unzipPath, packageFolderName);
-    const rulesPath = getEpmRulesPath(packagePath);
+    const rulesPath = getEprRulesPath(packagePath);
     const rules = await readRules(rulesPath);
 
     return rules;
