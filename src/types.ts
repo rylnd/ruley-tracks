@@ -1,6 +1,8 @@
 export type Rule = {
+  id: string;
   name: string;
   type: string;
+  version: number;
 };
 
 export interface IRuleFetcher {

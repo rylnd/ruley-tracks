@@ -53,8 +53,27 @@ export class EprRuleFetcher implements IRuleFetcher {
     const packageFolderName = getEprPackageFolderName(downloadPath);
     const packagePath = join(unzipPath, packageFolderName);
     const rulesPath = getEprRulesPath(packagePath);
-    const rules = await readRules(rulesPath);
+    const allRules = await readRules(rulesPath);
 
-    return rules;
+    const ruleVersionMap: Record<string, number> = {};
+    allRules.forEach((rule) => {
+      const { id, version } = rule;
+      const [actualId, parsedVersion] = id.split('_');
+
+      if (String(version) !== parsedVersion || actualId == null) {
+        throw new Error(`Version mismatch for rule ${id}: ${version} !== ${parsedVersion}`);
+      }
+
+      const currentVersion = ruleVersionMap[actualId] ?? 0;
+      if (currentVersion < version) {
+        ruleVersionMap[actualId] = version;
+      }
+    });
+
+    const latestRuleIds = Object.keys(ruleVersionMap).map((id) => `${id}_${ruleVersionMap[id]}`);
+
+    const latestRules = allRules.filter((rule) => latestRuleIds.includes(rule.id));
+
+    return latestRules;
   }
 }
