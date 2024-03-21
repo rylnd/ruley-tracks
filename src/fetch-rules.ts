@@ -1,7 +1,7 @@
-import { Rule, RuleFetcher } from './types';
+import { Rule, IRuleFetcher } from './types';
 
 interface FetchRulesArgs {
-  ruleFetcher: RuleFetcher;
+  ruleFetcher: IRuleFetcher;
 }
 
 const fetchRules = ({ ruleFetcher }: FetchRulesArgs): Promise<Rule[]> => {

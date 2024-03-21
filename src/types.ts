@@ -3,6 +3,10 @@ export type Rule = {
   type: string;
 };
 
-export type RuleFetcher = {
+export interface IRuleFetcher {
   fetch: () => Promise<Rule[]>;
-};
+}
+
+export interface PackageResponse {
+  download: string;
+}
