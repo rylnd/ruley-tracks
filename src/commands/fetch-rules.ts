@@ -1,4 +1,5 @@
 import { ArgumentsCamelCase, Argv } from 'yargs';
+import prompts from 'prompts';
 import { logger } from '../logger';
 import { bold, blue, green } from 'picocolors';
 import { EPR_RULE_URL } from '../constants';
@@ -15,21 +16,26 @@ export const aliases = [];
 export function builder(yargs: Argv): Argv<FetchRulesArgv> {
   return yargs.option('url', {
     type: 'string',
-    alias: 'f',
-    default: EPR_RULE_URL,
   });
 }
 
 export async function handler(argv: ArgumentsCamelCase<FetchRulesArgv>) {
-  const { url } = argv;
+  let { url } = argv;
+
   if (!url) {
-    throw new Error('This should never happen, because a default value is set!');
+    const { url: promptedUrl } = await prompts({
+      type: 'text',
+      name: 'url',
+      message: 'Specify the URL to the rules package specification:',
+      initial: EPR_RULE_URL,
+    });
+    url = promptedUrl as string;
   }
 
-  logger.info(blue('Using URL:'), url);
-
+  logger.log(bold(`${blue('Retrieving package info from: ')}${green(url)}`));
   const ruleFetcher = ruleFetcherFactory(url);
   const rules = await ruleFetcher.fetch();
+  logger.log(blue(bold('Rules have been retrieved.')));
 
   logger.info(green(bold('Rules:')), rules);
 }
