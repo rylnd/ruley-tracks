@@ -13,9 +13,9 @@ export class FileManager {
     this.folderName = folderName ?? 'ruley-tracks';
   }
 
-  public async getUnzipPath(): Promise<string> {
-    const tempDir = await this.getTempDir();
-    const destinationPath = join(tempDir, 'rules');
+  public async getOrMakeFolder(folderName: string): Promise<string> {
+    const directory = await this.getDirectory();
+    const destinationPath = join(directory, folderName);
 
     if (!existsSync(destinationPath)) {
       await mkdir(destinationPath);
@@ -24,14 +24,7 @@ export class FileManager {
     return destinationPath;
   }
 
-  public async getZipPath(): Promise<string> {
-    const tempDir = await this.getTempDir();
-    const destinationPath = join(tempDir, 'rules.zip');
-
-    return destinationPath;
-  }
-
-  private async getTempDir(): Promise<string> {
+  public async getDirectory(): Promise<string> {
     if (!this.directoryPath) {
       this.directoryPath = await this.buildDirectory();
     }

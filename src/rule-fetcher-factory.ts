@@ -8,6 +8,6 @@ export const ruleFetcherFactory = (url: string): IRuleFetcher => {
   if (url.includes('epr.elastic.co')) {
     return new EprRuleFetcher({ url, client: httpClient });
   } else {
-    throw new Error('Unknown rule fetcher');
+    throw new Error(`Unable to fetch rules for unrecognized URL: [${url}]`);
   }
 };

@@ -41,12 +41,12 @@ export class EprRuleFetcher implements IRuleFetcher {
     }
 
     // write zip to disk
-    const zipPath = await this.fileManager.getZipPath();
+    const zipPath = join(await this.fileManager.getDirectory(), 'rules.zip');
     const zipWriteStream = createWriteStream(zipPath, { flags: 'w' });
     await finished(Readable.fromWeb(downloadResponse.body).pipe(zipWriteStream));
 
     // unzip rules
-    const unzipPath = await this.fileManager.getUnzipPath();
+    const unzipPath = await this.fileManager.getOrMakeFolder('rules');
     new AdmZip(zipPath).extractAllTo(unzipPath, true);
 
     // read rules
