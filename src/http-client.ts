@@ -9,7 +9,7 @@ interface IHttpClient {
 }
 
 export class HttpClient implements IHttpClient {
-  private fetch: Fetch;
+  public fetch: Fetch;
 
   constructor(fetch: Fetch = global.fetch) {
     this.fetch = fetch;
