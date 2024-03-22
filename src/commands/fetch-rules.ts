@@ -4,6 +4,7 @@ import { logger } from '../logger';
 import { bold, blue, green } from 'picocolors';
 import { EPR_RULE_URL } from '../constants';
 import { ruleFetcherFactory } from '../rule-fetcher-factory';
+import { fetchRules } from '../fetch-rules';
 
 interface FetchRulesArgv {
   url?: string;
@@ -34,7 +35,7 @@ export async function handler(argv: ArgumentsCamelCase<FetchRulesArgv>) {
 
   logger.log(bold(`${blue('Retrieving package info from: ')}${green(url)}`));
   const ruleFetcher = ruleFetcherFactory(url);
-  const rules = await ruleFetcher.fetch();
+  const rules = await fetchRules({ ruleFetcher });
   logger.log(blue(bold('Rules have been retrieved.')));
 
   logger.info(green(bold('Rules:')), rules);
