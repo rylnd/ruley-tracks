@@ -35,15 +35,15 @@ export class EprRuleFetcher implements IRuleFetcher {
 
     // download zip
     const downloadUrl = new URL(downloadPath, this.url).toString();
-    const downloadResponse = await this.client.get(downloadUrl);
-    if (!downloadResponse.body) {
+    const downloadResponse = await this.client.getStream(downloadUrl);
+    if (!downloadResponse) {
       throw new Error(`No package file found at ${downloadUrl}`);
     }
 
     // write zip to disk
     const zipPath = join(await this.fileManager.getDirectory(), 'rules.zip');
     const zipWriteStream = createWriteStream(zipPath, { flags: 'w' });
-    await finished(Readable.fromWeb(downloadResponse.body).pipe(zipWriteStream));
+    await finished(Readable.fromWeb(downloadResponse).pipe(zipWriteStream));
 
     // unzip rules
     const unzipPath = await this.fileManager.getOrMakeFolder('rules');
@@ -55,6 +55,7 @@ export class EprRuleFetcher implements IRuleFetcher {
     const rulesPath = getEprRulesPath(packagePath);
     const allRules = await readRules(rulesPath);
 
+    // filter to latest rules
     const latestRulesById = allRules.reduce<Record<string, Rule>>((acc, rule) => {
       const { id, version } = rule;
       const [actualId, parsedVersion] = id.split('_');
@@ -69,7 +70,6 @@ export class EprRuleFetcher implements IRuleFetcher {
         throw new Error(`Version mismatch for rule ${id}: ${version} !== ${parsedVersion}`);
       }
     }, {});
-
     const latestRules = Object.values(latestRulesById);
 
     return latestRules;
