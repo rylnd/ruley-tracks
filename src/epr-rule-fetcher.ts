@@ -8,7 +8,7 @@ import { EPR_RULE_URL } from './constants';
 import type { HttpClient } from './http-client';
 import { PackageResponse, IRuleFetcher, Rule } from './types';
 import { FileManager } from './file-manager';
-import { readRules } from './rule-reader';
+import { readRulesFromFilesystem } from './utils/read-rules-from-fs';
 
 const getEprRulesPath = (eprPackagePath: string): string => join(eprPackagePath, 'kibana', 'security_rule');
 
@@ -53,7 +53,7 @@ export class EprRuleFetcher implements IRuleFetcher {
     const packageFolderName = getEprPackageFolderName(downloadPath);
     const packagePath = join(unzipPath, packageFolderName);
     const rulesPath = getEprRulesPath(packagePath);
-    const allRules = await readRules(rulesPath);
+    const allRules = await readRulesFromFilesystem(rulesPath);
 
     // filter to latest rules
     const latestRulesById = allRules.reduce<Record<string, Rule>>((acc, rule) => {
