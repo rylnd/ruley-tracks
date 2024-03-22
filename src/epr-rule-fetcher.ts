@@ -6,9 +6,10 @@ import { basename, extname, join } from 'path';
 
 import { EPR_RULE_URL } from './constants';
 import type { HttpClient } from './http-client';
-import { PackageResponse, IRuleFetcher, Rule } from './types';
+import { PackageResponse, IRuleFetcher } from './types';
 import { FileManager } from './file-manager';
 import { readRulesFromFilesystem } from './utils/read-rules-from-fs';
+import { latestRulesById } from './utils/latest-rules-by-id';
 
 const getEprRulesPath = (eprPackagePath: string): string => join(eprPackagePath, 'kibana', 'security_rule');
 
@@ -56,21 +57,7 @@ export class EprRuleFetcher implements IRuleFetcher {
     const allRules = await readRulesFromFilesystem(rulesPath);
 
     // filter to latest rules
-    const latestRulesById = allRules.reduce<Record<string, Rule>>((acc, rule) => {
-      const { id, version } = rule;
-      const [actualId, parsedVersion] = id.split('_');
-
-      if (String(version) === parsedVersion && actualId != null) {
-        const currentRule = acc[actualId];
-        if (currentRule == null || currentRule.version < version) {
-          acc[actualId] = rule;
-        }
-        return acc;
-      } else {
-        throw new Error(`Version mismatch for rule ${id}: ${version} !== ${parsedVersion}`);
-      }
-    }, {});
-    const latestRules = Object.values(latestRulesById);
+    const latestRules = latestRulesById(allRules);
 
     return latestRules;
   }
