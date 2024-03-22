@@ -16,9 +16,8 @@ export const readRulesFromFilesystem = async (rulesPath: string): Promise<Rule[]
   for (const ruleFile of ruleFiles) {
     const ruleFileData = readFileSync(join(rulesPath, ruleFile));
     const rule = JSON.parse(ruleFileData.toString());
-    // console.log('rule', JSON.stringify(rule, null, 2));
 
-    rules.push({ id: rule.id, name: rule.attributes.name, type: rule.type, version: rule.attributes.version });
+    rules.push({ ...rule, name: rule.attributes.name, version: rule.attributes.version });
   }
 
   return rules;
